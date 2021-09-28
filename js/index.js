@@ -1,34 +1,63 @@
 
-//// Update Product Quantity
+////Functions
+// ChangeQty Function
+function changeQty(productQty, productPrice, isAdd){
+    const qty = document.getElementById(productQty);
+    const itemQty = parseInt(qty.value);
 
-// Add Quantity btn handler function
-function addQty(addBtnID, qtyID){
-    const item = document.getElementById(addBtnID);
-    item.addEventListener('click', function(){
-        const itemQty = parseInt(document.getElementById(qtyID).value);
-        document.getElementById(qtyID).value = itemQty + 1;
+    const phonePrice = document.getElementById(productPrice);
+    const priceAmount = parseFloat(phonePrice.innerText);
+
+    if (isAdd == true){
+        phonePrice.innerText = (priceAmount / itemQty)  * (itemQty + 1);
+        const newQty = itemQty + 1;
+        qty.value = newQty;
+    }
+    if (isAdd == false && itemQty > 1){
+        phonePrice.innerText = (priceAmount / itemQty)  * (itemQty - 1);
+        const newQty = itemQty - 1;
+        qty.value = newQty;
+    }   
+}
+
+// Phone Update Function
+function changePhoneQty(btnID, isAdd){
+    document.getElementById(btnID).addEventListener('click', function(){
+        changeQty('phoneQty', 'phonePrice', isAdd);
+
+        subTotal();
     });
 }
 
-// Remove Quantity btn handler function
-function removeQty(removeBtnID, qtyID){
-    const item = document.getElementById(removeBtnID);
-    item.addEventListener('click', function(){
-        let itemQty = parseInt(document.getElementById(qtyID).value);
-        itemQty = itemQty - 1;
-        let presentQty = itemQty < 1 ? 1: itemQty;
-        document.getElementById(qtyID).value = presentQty;
+// increase phone item
+changePhoneQty('increasePhone', true);
+// decrease phone items
+changePhoneQty('decreasePhone', false);
+
+// Case Update Function
+function changeCasingQty(btnID, isAdd){
+    document.getElementById(btnID).addEventListener('click', function(){
+        changeQty('casingQty', 'casingPrice', isAdd);
+
+        subTotal();
     });
 }
 
-// Update product function
-function updateProduct(addBtnID, removeBtnID, qtyID){
-    addQty(addBtnID, qtyID);
-    removeQty(removeBtnID, qtyID);
+// Increase Case
+changeCasingQty('increaseCasing', true);
+// Decrease Case
+changeCasingQty('decreaseCasing', false);
+
+// Product Subtotal
+function subTotal(){
+    const phonePrice = document.getElementById('phonePrice');
+    const phoneAmount = parseFloat(phonePrice.innerText);
+
+    const casingPrice = document.getElementById('casingPrice');
+    const casingAmount = parseFloat(casingPrice.innerText);
+    const totalPrice = phoneAmount + casingAmount;
+    document.getElementById('subTotal').innerText = totalPrice;
+    return totalPrice;
+
 }
 
-// Phone quantity Update
-updateProduct('addPhone', 'removePhone', 'phoneQty');
-
-// Casing quantity Update
-updateProduct('addCasing', 'removeCasing', 'casingQty');

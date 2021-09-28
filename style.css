@@ -44,7 +44,8 @@ body{
 	width: unset;
 }
 .status{
-	text-align: right;
+	text-align: left;
+	padding-left: 50px;
 }
 .check-out{
     float: right;
