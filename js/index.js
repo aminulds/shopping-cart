@@ -25,7 +25,8 @@ function changePhoneQty(btnID, isAdd){
     document.getElementById(btnID).addEventListener('click', function(){
         changeQty('phoneQty', 'phonePrice', isAdd);
 
-        subTotal();
+        let subTotalPrice = subTotal();
+        productTotal(subTotalPrice);
     });
 }
 
@@ -39,7 +40,8 @@ function changeCasingQty(btnID, isAdd){
     document.getElementById(btnID).addEventListener('click', function(){
         changeQty('casingQty', 'casingPrice', isAdd);
 
-        subTotal();
+        let subTotalPrice = subTotal();
+        productTotal(subTotalPrice);
     });
 }
 
@@ -48,7 +50,7 @@ changeCasingQty('increaseCasing', true);
 // Decrease Case
 changeCasingQty('decreaseCasing', false);
 
-// Product Subtotal
+// Product Subtotal Function
 function subTotal(){
     const phonePrice = document.getElementById('phonePrice');
     const phoneAmount = parseFloat(phonePrice.innerText);
@@ -58,6 +60,32 @@ function subTotal(){
     const totalPrice = phoneAmount + casingAmount;
     document.getElementById('subTotal').innerText = totalPrice;
     return totalPrice;
-
 }
 
+// Product Total Function
+function productTotal(subTotal){
+
+    document.getElementById('tax').innerText = subTotal * 0.15;
+    document.getElementById('total').innerText = subTotal + (subTotal * 0.15);
+}
+
+// Load product Total
+let subTotalPrice = subTotal();
+productTotal(subTotalPrice);
+
+
+//product Remove Function
+function productRemove(removeBtn, priceID){
+    document.getElementById(removeBtn).addEventListener('click', function(e){
+        const subTotalPrice = subTotal(); // function call for subtotal
+        const productPrice = parseFloat(document.getElementById(priceID).innerText);
+        document.getElementById('subTotal').innerText = subTotalPrice - productPrice;
+        productTotal(subTotalPrice - productPrice); // function call
+    
+        e.target.parentNode.parentNode.parentNode.parentNode.removeChild(e.target.parentNode.parentNode.parentNode);
+    });
+}
+
+
+productRemove('removePhone', 'phonePrice'); // phone removed
+productRemove('removeCase', 'casingPrice'); // casing removed
