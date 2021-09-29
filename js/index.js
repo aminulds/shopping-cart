@@ -27,6 +27,8 @@ function changePhoneQty(btnID, isAdd){
 
         let subTotalPrice = subTotal();
         productTotal(subTotalPrice);
+
+        
     });
 }
 
@@ -74,18 +76,30 @@ let subTotalPrice = subTotal();
 productTotal(subTotalPrice);
 
 
-//product Remove Function
-function productRemove(removeBtn, priceID){
-    document.getElementById(removeBtn).addEventListener('click', function(e){
-        const subTotalPrice = subTotal(); // function call for subtotal
-        const productPrice = parseFloat(document.getElementById(priceID).innerText);
-        document.getElementById('subTotal').innerText = subTotalPrice - productPrice;
-        productTotal(subTotalPrice - productPrice); // function call
-    
-        e.target.parentNode.parentNode.parentNode.parentNode.removeChild(e.target.parentNode.parentNode.parentNode);
-    });
+// Price Remove
+function priceRemove(product){
+    const phonePrice = parseFloat(document.getElementById(product + 'Price').innerText) ;
+    const subTotalAmount = subTotal(); // Subtotal function call
+    document.getElementById('subTotal').innerText = subTotalAmount - phonePrice;
+    productTotal(subTotalAmount - phonePrice); // Total function call  
 }
 
+// Product Remove
+function productRemove(product){
+    document.getElementById(product + 'Remove').addEventListener('click', function(e){
+        if (product == 'phone'){
+            priceRemove(product);
+        }
+        if(product == 'casing'){
+            priceRemove(product);
+        }
 
-productRemove('removePhone', 'phonePrice'); // phone removed
-productRemove('removeCase', 'casingPrice'); // casing removed
+        let target = e.target;
+        target.parentNode.parentNode.parentNode.parentNode.removeChild(target.parentNode.parentNode.parentNode);   
+    })
+}
+
+productRemove('phone');
+productRemove('casing');
+
+
